@@ -1,6 +1,7 @@
 (ns flare.session
   (:require [reagent.core :as reagent :refer [atom]]))
 
+
 (defonce app-state
   (atom {:title "Flare"
          :default-query ""
@@ -9,4 +10,6 @@
          :fields {:id {:label "Doc ID"}
                   :title_statement_display {:label "title"}} 
          :docs []}))
+
+(def title-field (name (@app-state :title-field)))
 

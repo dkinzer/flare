@@ -1,33 +1,18 @@
 (ns flare.core
   (:require [flare.configuration :as config :refer [default-solr-params]]
             [flare.components.search-form :refer [search-form]]
+            [flare.components.results :refer [results]]
             [flare.session :refer [app-state]]
             [reagent.core :as reagent]))
 
-
-(def title-field (name (@app-state :title-field)))
-
-(defn result [doc]
-  ^{:key (doc "id")}
-  [:article { :id (doc "id") :class ["document" "blacklight-book"]}
-   [:header {:class ["documentHeader" "row"]}
-    [:h3 {:class ["index_title" "document-title-heading" "col-sm-9" "col-lg-10"]}
-     (first (doc title-field))]]
-   [:dl {:class ["document-metadata dl-invert row"]}]])
-
-(defn results [docs]
-  [:div {:id "documents" :class "document-list"}
-   (for [doc docs]
-     (result doc))])
-
-(defn catalog []
+(defn catalog [state]
   [:div
-   [:h1 (:title @app-state)]
-   [search-form (:default-query @app-state)]
-   [results (:docs @app-state)]])
+   [:h1 (:title @state)]
+   [search-form (:default-query @state)]
+   [results (:docs @state)]])
 
 (reagent/render-component
-  [catalog]
+  [catalog app-state]
   (. js/document (getElementById "app")))
 
 (defn on-js-reload []
